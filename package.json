@@ -1,0 +1,26 @@
+{
+  "name": "express-routed-controllers",
+  "version": "0.0.1",
+  "description": "Library allowing to use routing and controllers Express.JS framework based applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myownsumm/express-routed-controllers.git"
+  },
+  "keywords": [
+    "express",
+    "node",
+    "routing",
+    "route",
+    "controller"
+  ],
+  "author": "Alexander Poltoratskiy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/myownsumm/express-routed-controllers/issues"
+  },
+  "homepage": "https://github.com/myownsumm/express-routed-controllers#readme"
+}
