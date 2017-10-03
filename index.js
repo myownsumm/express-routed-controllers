@@ -1,14 +1,6 @@
-const express = require('express');
+module.exports = {
+    router: require('./router'),
+    controller: require('./base.controller')
+};
 
-const router = express.Router({
-    mergeParams: true
-});
 
-router.get('/test-lib', (req, res, next) => {
-    return res.json({
-        result: true,
-        message: 'hello'
-    })
-});
-
-module.exports = router;
