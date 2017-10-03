@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/myownsumm/express-routed-controllers/issues"
   },
-  "homepage": "https://github.com/myownsumm/express-routed-controllers#readme"
+  "homepage": "https://github.com/myownsumm/express-routed-controllers#readme",
+  "dependencies": {
+    "express": "^4.16.1"
+  }
 }
