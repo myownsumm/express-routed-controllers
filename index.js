@@ -1,5 +1,5 @@
 module.exports = {
-    router: require('./router'),
+    DynamicRouter: require('./router'),
     RoutedController: require('./base.controller')
 };
 
