@@ -1,6 +1,6 @@
 module.exports = {
     router: require('./router'),
-    controller: require('./base.controller')
+    RoutedController: require('./base.controller')
 };
 
 
