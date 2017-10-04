@@ -16,6 +16,10 @@ class BaseController {
     get body() {
         return this._req.body;
     }
+
+    get query() {
+        return this._req.query;
+    }
 }
 
 module.exports = BaseController;
