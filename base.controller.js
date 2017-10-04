@@ -8,6 +8,10 @@ class BaseController {
     response(data, format = 'json') {
         return this._req[format](data);
     }
+
+    get headers() {
+        return this._req.headers;
+    }
 }
 
 module.exports = BaseController;
