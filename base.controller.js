@@ -12,6 +12,10 @@ class BaseController {
     get headers() {
         return this._req.headers;
     }
+
+    get body() {
+        return this._req.body;
+    }
 }
 
 module.exports = BaseController;
