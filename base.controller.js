@@ -5,8 +5,8 @@ class BaseController {
         this._res = res;
     }
 
-    response(data) {
-        return this._req.json(data);
+    response(data, format = 'json') {
+        return this._req[format](data);
     }
 }
 
