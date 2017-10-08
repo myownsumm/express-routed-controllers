@@ -1,6 +1,6 @@
 {
   "name": "express-routed-controllers",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Library allowing to use routing and controllers Express.JS framework based applications",
   "main": "index.js",
   "scripts": {
