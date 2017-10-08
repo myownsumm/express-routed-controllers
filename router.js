@@ -25,12 +25,20 @@ class DynamicRouter {
         });
     }
 
-    put() {
-        // todo
+    put(actionStr, controllerClass, methodName) {
+        this._router.put(actionStr, (req, res, next) => {
+            const controller = new controllerClass(req, res);
+
+            return controller[methodName](req.body);
+        });
     }
 
-    delete() {
-        // todo
+    delete(actionStr, controllerClass, methodName) {
+        this._router.delete(actionStr, (req, res, next) => {
+            const controller = new controllerClass(req, res);
+
+            return controller[methodName](req.query);
+        });
     }
 
     controller() {
