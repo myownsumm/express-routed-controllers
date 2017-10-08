@@ -45,10 +45,6 @@ class DynamicRouter {
         // todo
     }
 
-    applyTo(expressRouter) {
-        expressRouter.use(this._router);
-    }
-
     get router() {
         return this._router;
     }
