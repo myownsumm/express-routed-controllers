@@ -17,8 +17,12 @@ class DynamicRouter {
         });
     }
 
-    post() {
-        // todo
+    post(actionStr, controllerClass, methodName) {
+        this._router.post(actionStr, (req, res, next) => {
+            const controller = new controllerClass(req, res);
+
+            return controller[methodName](req.body);
+        });
     }
 
     put() {
