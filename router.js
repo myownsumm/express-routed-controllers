@@ -1,4 +1,5 @@
 const express = require('express');
+const merge = require('merge');
 
 const router = express.Router({
     mergeParams: true
@@ -41,8 +42,21 @@ class DynamicRouter {
         });
     }
 
-    controller() {
-        // todo
+    controller(url, controllerClass) {
+        this._router.use(url, (req, res, next) => {
+            const httpMethod = req.method;
+
+            const startedGetParamsFromIndex = req.url.indexOf('?');
+            const action = req.url.slice(1, startedGetParamsFromIndex !== -1? startedGetParamsFromIndex : req.url.length);
+
+            const methodToCall = httpMethod.toLowerCase() + action.charAt(0).toUpperCase() + action.slice(1);
+
+            const controller = new controllerClass(req, res);
+
+            return controller[methodToCall](
+                merge.recursive(true, req.query, req.body)
+            );
+        });
     }
 
     get router() {
