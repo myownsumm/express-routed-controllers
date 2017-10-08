@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/myownsumm/express-routed-controllers#readme",
   "dependencies": {
-    "express": "^4.16.1"
+    "express": "^4.16.1",
+    "merge": "^1.2.0"
   }
 }
