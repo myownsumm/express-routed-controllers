@@ -6,7 +6,7 @@ class BaseController {
     }
 
     response(data, format = 'json') {
-        return this._req[format](data);
+        return this._res[format](data);
     }
 
     get headers() {

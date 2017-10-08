@@ -10,7 +10,27 @@ class DynamicRouter {
     }
 
     get(actionStr, controllerClass, methodName) {
-        console.log(actionStr, controllerClass, methodName);
+        this._router.get(actionStr, (req, res, next) => {
+            const controller = new controllerClass(req, res);
+
+            return controller[methodName](req.query);
+        });
+    }
+
+    post() {
+        // todo
+    }
+
+    put() {
+        // todo
+    }
+
+    delete() {
+        // todo
+    }
+
+    controller() {
+        // todo
     }
 
     applyTo(expressRouter) {
