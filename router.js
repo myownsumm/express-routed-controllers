@@ -10,6 +10,13 @@ class DynamicRouter {
         this._router = router;
     }
 
+    /**
+     * @example dRouter.get('/auth/me', AuthController, 'getMe');
+     *
+     * @param actionStr
+     * @param controllerClass
+     * @param methodName
+     */
     get(actionStr, controllerClass, methodName) {
         this._router.get(actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
@@ -18,6 +25,13 @@ class DynamicRouter {
         });
     }
 
+    /**
+     * @example dRouter.post('/auth/register', AuthController, 'register');
+     *
+     * @param actionStr
+     * @param controllerClass
+     * @param methodName
+     */
     post(actionStr, controllerClass, methodName) {
         this._router.post(actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
@@ -26,6 +40,13 @@ class DynamicRouter {
         });
     }
 
+    /**
+     * @example dRouter.put('/user', UserController, 'update');
+     *
+     * @param actionStr
+     * @param controllerClass
+     * @param methodName
+     */
     put(actionStr, controllerClass, methodName) {
         this._router.put(actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
@@ -34,6 +55,13 @@ class DynamicRouter {
         });
     }
 
+    /**
+     * @example dRouter.delete('/user', UserController, 'remove');
+     *
+     * @param actionStr
+     * @param controllerClass
+     * @param methodName
+     */
     delete(actionStr, controllerClass, methodName) {
         this._router.delete(actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
