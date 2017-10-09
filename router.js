@@ -70,8 +70,14 @@ class DynamicRouter {
         });
     }
 
-    controller(url, controllerClass) {
-        this._router.use(url, (req, res, next) => {
+    /**
+     * @example dRouter.controller('/users', UsersController);
+     *
+     * @param actionStr
+     * @param controllerClass
+     */
+    controller(actionStr, controllerClass) {
+        this._router.use(actionStr, (req, res, next) => {
             const httpMethod = req.method;
 
             // cur uri coded params like "?param=value"
