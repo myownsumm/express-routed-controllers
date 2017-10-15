@@ -4,13 +4,17 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 
+
 declare module "express-routed-controllers" {
     export class BaseController {
         response(data: object, format?: string);
     }
 
     export class DynamicRouter {
+        // todo find way to specify controller type of BaseController
+        controller(action: string, controller: any);
 
+        public router: any;
     }
 }
 
