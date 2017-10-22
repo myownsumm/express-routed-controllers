@@ -4,10 +4,13 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
 
-
 declare module "express-routed-controllers" {
+    import * as express from 'express';
+
     export class BaseController {
         response(data: object, format?: string);
+
+        request: express.Request;
     }
 
     export class DynamicRouter {
