@@ -20,6 +20,10 @@ class BaseController {
     get query() {
         return this._req.query;
     }
+
+    get request() {
+        return this._req;
+    }
 }
 
 module.exports = BaseController;
