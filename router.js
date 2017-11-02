@@ -128,6 +128,14 @@ class DynamicRouter {
      * @returns {*}
      */
     group(paramsObj, callback) {
+        this._router.use((req, res, next) => {
+            console.log(req.url);
+
+            next();
+        });
+
+        // todo find way to prevent middlewares deeper handling if no action string was matched
+
         const dRouter = new this.constructor();
         const prefix =  this.getPrefix() + (paramsObj.prefix || '');
 
