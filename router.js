@@ -26,12 +26,12 @@ class DynamicRouter {
         this._middlewares = list;
 
         this._middlewares.forEach(middleware => {
-            this.router.use(middleware);
+            this._router.use(middleware);
         });
     }
 
-    getMiddlewares() {
-        return this._middlewares;
+    get router() {
+        return this._router;
     }
 
     /**
@@ -45,7 +45,7 @@ class DynamicRouter {
         this._router.get(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName](req.query);
+            return controller[methodName]();
         });
     }
 
@@ -60,7 +60,7 @@ class DynamicRouter {
         this._router.post(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName](req.body);
+            return controller[methodName]();
         });
     }
 
@@ -75,7 +75,7 @@ class DynamicRouter {
         this._router.put(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName](req.body);
+            return controller[methodName]();
         });
     }
 
@@ -90,7 +90,7 @@ class DynamicRouter {
         this._router.delete(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName](req.query);
+            return controller[methodName]();
         });
     }
 
@@ -118,9 +118,7 @@ class DynamicRouter {
 
             const controller = new controllerClass(req, res);
 
-            return controller[methodToCall](
-                merge.recursive(true, req.query, req.body)
-            );
+            return controller[methodToCall]();
         });
     }
 
@@ -132,17 +130,12 @@ class DynamicRouter {
      */
     group(paramsObj, callback) {
         const dRouter = new this.constructor();
-
         const prefix =  this.getPrefix() + (paramsObj.prefix || '');
 
         dRouter.setPrefix(prefix);
         dRouter.setMiddlewares(paramsObj.middlewares || []);
 
         return callback(dRouter);
-    }
-
-    get router() {
-        return this._router;
     }
 }
 
