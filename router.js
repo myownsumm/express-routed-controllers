@@ -23,9 +23,15 @@ class DynamicRouter {
 
     setMiddlewares(list = []) {
         this._middlewares = list;
+    }
 
+    getMiddlewares() {
+        return this._middlewares;
+    }
+
+    applyMiddlewares(action) {
         this._middlewares.forEach(middleware => {
-            this._router.use(middleware);
+            this._router.use(action, middleware);
         });
     }
 
@@ -41,6 +47,10 @@ class DynamicRouter {
      * @param methodName
      */
     get(actionStr, controllerClass, methodName) {
+        const action = this.getPrefix() + actionStr;
+
+        this.applyMiddlewares(action);
+
         this._router.get(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
@@ -56,6 +66,10 @@ class DynamicRouter {
      * @param methodName
      */
     post(actionStr, controllerClass, methodName) {
+        const action = this.getPrefix() + actionStr;
+
+        this.applyMiddlewares(action);
+
         this._router.post(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
@@ -71,6 +85,10 @@ class DynamicRouter {
      * @param methodName
      */
     put(actionStr, controllerClass, methodName) {
+        const action = this.getPrefix() + actionStr;
+
+        this.applyMiddlewares(action);
+
         this._router.put(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
@@ -86,6 +104,10 @@ class DynamicRouter {
      * @param methodName
      */
     delete(actionStr, controllerClass, methodName) {
+        const action = this.getPrefix() + actionStr;
+
+        this.applyMiddlewares(action);
+
         this._router.delete(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
@@ -100,7 +122,11 @@ class DynamicRouter {
      * @param controllerClass
      */
     controller(actionStr, controllerClass) {
-        this._router.use(this.getPrefix() + actionStr, (req, res, next) => {
+        const action = this.getPrefix() + actionStr;
+
+        this.applyMiddlewares(action);
+
+        this._router.use(action, (req, res, next) => {
             const httpMethod = req.method;
 
             // cut uri coded params like "?param=value"
@@ -128,19 +154,13 @@ class DynamicRouter {
      * @returns {*}
      */
     group(paramsObj, callback) {
-        this._router.use((req, res, next) => {
-            console.log(req.url);
-
-            next();
-        });
-
-        // todo find way to prevent middlewares deeper handling if no action string was matched
-
         const dRouter = new this.constructor();
+
         const prefix =  this.getPrefix() + (paramsObj.prefix || '');
+        const middlewares =  this.getMiddlewares().concat(paramsObj.middlewares || []);
 
         dRouter.setPrefix(prefix);
-        dRouter.setMiddlewares(paramsObj.middlewares || []);
+        dRouter.setMiddlewares(middlewares);
 
         return callback(dRouter);
     }
