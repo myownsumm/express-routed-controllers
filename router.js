@@ -134,10 +134,9 @@ class DynamicRouter {
         const dRouter = new this.constructor();
 
         const prefix =  this.getPrefix() + (paramsObj.prefix || '');
-        dRouter.setPrefix(prefix);
 
-        const middlewares = this.getMiddlewares().concat(paramsObj.middlewares || []);
-        dRouter.setMiddlewares(middlewares);
+        dRouter.setPrefix(prefix);
+        dRouter.setMiddlewares(paramsObj.middlewares || []);
 
         return callback(dRouter);
     }
