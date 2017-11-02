@@ -20,5 +20,14 @@ dRouter.get('/auth/me', AuthController, 'getMe');
 dRouter.post('/auth/register', AuthController, 'register');
 dRouter.controller('/users', UsersController);
 
+dRouter.group(
+    {
+        prefix: '/group1'
+    },
+    (group) => {
+        group.controller('/test', TestsController);
+    }
+);
+
 this.express.use(dRouter.router);
 ```
