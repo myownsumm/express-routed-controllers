@@ -10,14 +10,28 @@ class DynamicRouter {
         this._router = router;
 
         this._action_prefix = '';
+
+        this._middlewares = [];
     }
 
-    set prefix(prefix) {
+    setPrefix(prefix = '') {
         this._action_prefix = prefix;
     }
 
-    get prefix() {
+    getPrefix() {
         return this._action_prefix;
+    }
+
+    setMiddlewares(list = []) {
+        this._middlewares = list;
+
+        this._middlewares.forEach(middleware => {
+            this.router.use(middleware);
+        });
+    }
+
+    getMiddlewares() {
+        return this._middlewares;
     }
 
     /**
@@ -28,7 +42,7 @@ class DynamicRouter {
      * @param methodName
      */
     get(actionStr, controllerClass, methodName) {
-        this._router.get(this.prefix + actionStr, (req, res, next) => {
+        this._router.get(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
             return controller[methodName](req.query);
@@ -43,7 +57,7 @@ class DynamicRouter {
      * @param methodName
      */
     post(actionStr, controllerClass, methodName) {
-        this._router.post(this.prefix + actionStr, (req, res, next) => {
+        this._router.post(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
             return controller[methodName](req.body);
@@ -58,7 +72,7 @@ class DynamicRouter {
      * @param methodName
      */
     put(actionStr, controllerClass, methodName) {
-        this._router.put(this.prefix + actionStr, (req, res, next) => {
+        this._router.put(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
             return controller[methodName](req.body);
@@ -73,7 +87,7 @@ class DynamicRouter {
      * @param methodName
      */
     delete(actionStr, controllerClass, methodName) {
-        this._router.delete(this.prefix + actionStr, (req, res, next) => {
+        this._router.delete(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
             return controller[methodName](req.query);
@@ -87,7 +101,7 @@ class DynamicRouter {
      * @param controllerClass
      */
     controller(actionStr, controllerClass) {
-        this._router.use(this.prefix + actionStr, (req, res, next) => {
+        this._router.use(this.getPrefix() + actionStr, (req, res, next) => {
             const httpMethod = req.method;
 
             // cut uri coded params like "?param=value"
@@ -112,13 +126,18 @@ class DynamicRouter {
 
     /**
      *
-     * @param {{prefix: string}} paramsObj
+     * @param {{prefix: string, middlewares: array}} paramsObj
      * @param callback
      * @returns {*}
      */
     group(paramsObj, callback) {
         const dRouter = new this.constructor();
-        dRouter.prefix = this.prefix + paramsObj.prefix;
+
+        const prefix =  this.getPrefix() + (paramsObj.prefix || '');
+        dRouter.setPrefix(prefix);
+
+        const middlewares = this.getMiddlewares().concat(paramsObj.middlewares || []);
+        dRouter.setMiddlewares(middlewares);
 
         return callback(dRouter);
     }

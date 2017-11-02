@@ -11,7 +11,7 @@ declare module "express-routed-controllers" {
         // todo find way to specify controller type of BaseController
         controller(action: string, controller: any);
 
-        public group(params: {prefix?: string}, callback);
+        public group(params: {prefix?: string, middlewares?}, callback);
 
         public router: any;
     }
