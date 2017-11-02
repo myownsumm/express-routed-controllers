@@ -1,5 +1,4 @@
 const express = require('express');
-const merge = require('merge');
 
 const router = express.Router({
     mergeParams: true
