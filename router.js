@@ -80,7 +80,7 @@ class DynamicRouter {
         this._router.use(actionStr, (req, res, next) => {
             const httpMethod = req.method;
 
-            // cur uri coded params like "?param=value"
+            // cut uri coded params like "?param=value"
             const startedGetParamsFromIndex = req.url.indexOf('?');
             const action = req.url.slice(1, startedGetParamsFromIndex !== -1 ? startedGetParamsFromIndex : req.url.length);
 
