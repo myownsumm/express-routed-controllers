@@ -54,7 +54,8 @@ class DynamicRouter {
         this._router.get(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]();
+            return controller[methodName]()
+                .catch(next);
         });
     }
 
@@ -73,7 +74,8 @@ class DynamicRouter {
         this._router.post(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]();
+            return controller[methodName]()
+                .catch(next);
         });
     }
 
@@ -92,7 +94,8 @@ class DynamicRouter {
         this._router.put(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]();
+            return controller[methodName]()
+                .catch(next);
         });
     }
 
@@ -111,7 +114,8 @@ class DynamicRouter {
         this._router.delete(this.getPrefix() + actionStr, (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]();
+            return controller[methodName]()
+                .catch(next);
         });
     }
 
@@ -147,7 +151,8 @@ class DynamicRouter {
                 throw new Error(`No ${methodToCall}() function inside ${controller.constructor.name} defined.`);
             }
 
-            return controller[methodToCall]();
+            return controller[methodToCall]()
+                .catch(next);
         });
     }
 
