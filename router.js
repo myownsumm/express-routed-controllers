@@ -143,6 +143,10 @@ class DynamicRouter {
 
             const controller = new controllerClass(req, res);
 
+            if (controller[methodToCall] === undefined) {
+                throw new Error(`No ${methodToCall}() function inside ${controller.constructor.name} defined.`);
+            }
+
             return controller[methodToCall]();
         });
     }
