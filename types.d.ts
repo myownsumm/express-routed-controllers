@@ -2,9 +2,10 @@ declare module "express-routed-controllers" {
     import * as express from 'express';
 
     export class BaseController {
-        response(data: object, format?: string);
+        makeResponse(data: object, format?: string);
 
         request: express.Request;
+        response: express.Response;
     }
 
     export class DynamicRouter {
