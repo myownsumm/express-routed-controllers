@@ -143,27 +143,27 @@ class DynamicRouter {
         this.applyMiddlewares(action);
 
         this._router.use(action, async (req, res, next) => {
-            const httpMethod = req.method;
-
-            // cut uri coded params like "?param=value"
-            const startedGetParamsFromIndex = req.url.indexOf('?');
-            const action = req.url.slice(1, startedGetParamsFromIndex !== -1 ? startedGetParamsFromIndex : req.url.length);
-
-            // modify "my-super-endpoint" to "mySuperEndpoint"
-            const camelCased = action.replace(/-([a-z])/g, g => {
-                return g[1].toUpperCase();
-            });
-
-            // concat "get" with "mySuperEndpoint" to get "getMySuperEndpoint"
-            const methodToCall = httpMethod.toLowerCase() + camelCased.charAt(0).toUpperCase() + camelCased.slice(1);
-
-            const controller = new controllerClass(req, res);
-
-            if (controller[methodToCall] === undefined) {
-                throw new Error(`No ${methodToCall}() function inside ${controller.constructor.name} defined.`);
-            }
-
             try {
+                const httpMethod = req.method;
+
+                // cut uri coded params like "?param=value"
+                const startedGetParamsFromIndex = req.url.indexOf('?');
+                const action = req.url.slice(1, startedGetParamsFromIndex !== -1 ? startedGetParamsFromIndex : req.url.length);
+
+                // modify "my-super-endpoint" to "mySuperEndpoint"
+                const camelCased = action.replace(/-([a-z])/g, g => {
+                    return g[1].toUpperCase();
+                });
+
+                // concat "get" with "mySuperEndpoint" to get "getMySuperEndpoint"
+                const methodToCall = httpMethod.toLowerCase() + camelCased.charAt(0).toUpperCase() + camelCased.slice(1);
+
+                const controller = new controllerClass(req, res);
+
+                if (controller[methodToCall] === undefined) {
+                    throw new Error(`No ${methodToCall}() function inside ${controller.constructor.name} defined.`);
+                }
+
                 return await controller[methodToCall]();
             } catch (err) {
                 return next(err);
