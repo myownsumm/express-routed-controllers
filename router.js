@@ -44,18 +44,21 @@ class DynamicRouter {
      *
      * @param actionStr
      * @param controllerClass
-     * @param methodName
+     * @param methodToCall
      */
-    get(actionStr, controllerClass, methodName) {
+    get(actionStr, controllerClass, methodToCall) {
         const action = this.getPrefix() + actionStr;
 
         this.applyMiddlewares(action);
 
-        this._router.get(this.getPrefix() + actionStr, (req, res, next) => {
+        this._router.get(this.getPrefix() + actionStr, async (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]()
-                .catch(next);
+            try {
+                return await controller[methodToCall]();
+            } catch (err) {
+                return next(err);
+            }
         });
     }
 
@@ -64,18 +67,21 @@ class DynamicRouter {
      *
      * @param actionStr
      * @param controllerClass
-     * @param methodName
+     * @param methodToCall
      */
-    post(actionStr, controllerClass, methodName) {
+    post(actionStr, controllerClass, methodToCall) {
         const action = this.getPrefix() + actionStr;
 
         this.applyMiddlewares(action);
 
-        this._router.post(this.getPrefix() + actionStr, (req, res, next) => {
+        this._router.post(this.getPrefix() + actionStr, async (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]()
-                .catch(next);
+            try {
+                return await controller[methodToCall]();
+            } catch (err) {
+                return next(err);
+            }
         });
     }
 
@@ -84,18 +90,21 @@ class DynamicRouter {
      *
      * @param actionStr
      * @param controllerClass
-     * @param methodName
+     * @param methodToCall
      */
-    put(actionStr, controllerClass, methodName) {
+    put(actionStr, controllerClass, methodToCall) {
         const action = this.getPrefix() + actionStr;
 
         this.applyMiddlewares(action);
 
-        this._router.put(this.getPrefix() + actionStr, (req, res, next) => {
+        this._router.put(this.getPrefix() + actionStr, async (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]()
-                .catch(next);
+            try {
+                return await controller[methodToCall]();
+            } catch (err) {
+                return next(err);
+            }
         });
     }
 
@@ -104,18 +113,21 @@ class DynamicRouter {
      *
      * @param actionStr
      * @param controllerClass
-     * @param methodName
+     * @param methodToCall
      */
-    delete(actionStr, controllerClass, methodName) {
+    delete(actionStr, controllerClass, methodToCall) {
         const action = this.getPrefix() + actionStr;
 
         this.applyMiddlewares(action);
 
-        this._router.delete(this.getPrefix() + actionStr, (req, res, next) => {
+        this._router.delete(this.getPrefix() + actionStr, async (req, res, next) => {
             const controller = new controllerClass(req, res);
 
-            return controller[methodName]()
-                .catch(next);
+            try {
+                return await controller[methodToCall]();
+            } catch (err) {
+                return next(err);
+            }
         });
     }
 
@@ -130,7 +142,7 @@ class DynamicRouter {
 
         this.applyMiddlewares(action);
 
-        this._router.use(action, (req, res, next) => {
+        this._router.use(action, async (req, res, next) => {
             const httpMethod = req.method;
 
             // cut uri coded params like "?param=value"
@@ -151,8 +163,11 @@ class DynamicRouter {
                 throw new Error(`No ${methodToCall}() function inside ${controller.constructor.name} defined.`);
             }
 
-            return controller[methodToCall]()
-                .catch(next);
+            try {
+                return await controller[methodToCall]();
+            } catch (err) {
+                return next(err);
+            }
         });
     }
 
@@ -165,8 +180,8 @@ class DynamicRouter {
     group(paramsObj, callback) {
         const dRouter = new this.constructor();
 
-        const prefix =  this.getPrefix() + (paramsObj.prefix || '');
-        const middlewares =  this.getMiddlewares().concat(paramsObj.middlewares || []);
+        const prefix = this.getPrefix() + (paramsObj.prefix || '');
+        const middlewares = this.getMiddlewares().concat(paramsObj.middlewares || []);
 
         dRouter.setPrefix(prefix);
         dRouter.setMiddlewares(middlewares);
