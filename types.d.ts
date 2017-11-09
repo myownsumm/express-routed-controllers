@@ -2,7 +2,7 @@ declare module "express-routed-controllers" {
     import * as express from 'express';
 
     export class RoutedController {
-        makeResponse(data: object, format?: string);
+        makeResponse(data: any, format?: string);
 
         request: express.Request;
         response: express.Response;
