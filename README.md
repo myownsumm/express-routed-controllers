@@ -3,14 +3,14 @@
 Simple library allowing you to use declarative routing in "laravel way".
 
 It contains two main parts:
-* BaseController
-* Dynamic router
+* RoutedController
+* DynamicRouter
 
 ### BaseController
-Extend your controllers from BaseController and you will get such benefits as Request properties injection (not working yet),
-configurable response() method. Most features are not developed yet.
+Extend your controllers from BaseController and you'll get such benefits as Request properties injection,
+configurable response() method.
 
-### Dynamic Router
+### DynamicRouter
 Import it and initialize it with your Express router.
 Such functionality is available:
 ```javascript
@@ -20,9 +20,19 @@ dRouter.get('/auth/me', AuthController, 'getMe');
 dRouter.post('/auth/register', AuthController, 'register');
 dRouter.controller('/users', UsersController);
 
+dRouter.group({
+        middlewares: [guestMiddleware]
+    },
+    guest => {
+        guest.post('/auth/register', AuthController, 'register');
+        guest.post('/auth/login', AuthController, 'login');
+    }
+);
+
 dRouter.group(
     {
-        prefix: '/group1'
+        prefix: '/group1',
+        middlewares: [authMiddleware]
     },
     (group) => {
         group.controller('/test', TestsController);
