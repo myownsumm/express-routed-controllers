@@ -47,21 +47,7 @@ class DynamicRouter {
      * @param methodToCall
      */
     get(actionStr, controllerClass, methodToCall) {
-        const action = this.getPrefix() + actionStr;
-
-        this.applyMiddlewares(action);
-
-        this._router.get(this.getPrefix() + actionStr, async (req, res, next) => {
-            const controller = new controllerClass(req, res);
-
-            try {
-                this._checkIfActionExists(controller, methodToCall);
-
-                return await controller[methodToCall]();
-            } catch (err) {
-                return next(err);
-            }
-        });
+        return this._handleDefinedRequest(actionStr, controllerClass, methodToCall, 'get');
     }
 
     /**
@@ -72,21 +58,7 @@ class DynamicRouter {
      * @param methodToCall
      */
     post(actionStr, controllerClass, methodToCall) {
-        const action = this.getPrefix() + actionStr;
-
-        this.applyMiddlewares(action);
-
-        this._router.post(this.getPrefix() + actionStr, async (req, res, next) => {
-            const controller = new controllerClass(req, res);
-
-            try {
-                this._checkIfActionExists(controller, methodToCall);
-
-                return await controller[methodToCall]();
-            } catch (err) {
-                return next(err);
-            }
-        });
+        return this._handleDefinedRequest(actionStr, controllerClass, methodToCall, 'post');
     }
 
     /**
@@ -97,21 +69,7 @@ class DynamicRouter {
      * @param methodToCall
      */
     put(actionStr, controllerClass, methodToCall) {
-        const action = this.getPrefix() + actionStr;
-
-        this.applyMiddlewares(action);
-
-        this._router.put(this.getPrefix() + actionStr, async (req, res, next) => {
-            const controller = new controllerClass(req, res);
-
-            try {
-                this._checkIfActionExists(controller, methodToCall);
-
-                return await controller[methodToCall]();
-            } catch (err) {
-                return next(err);
-            }
-        });
+        return this._handleDefinedRequest(actionStr, controllerClass, methodToCall, 'put');
     }
 
     /**
@@ -122,21 +80,7 @@ class DynamicRouter {
      * @param methodToCall
      */
     delete(actionStr, controllerClass, methodToCall) {
-        const action = this.getPrefix() + actionStr;
-
-        this.applyMiddlewares(action);
-
-        this._router.delete(this.getPrefix() + actionStr, async (req, res, next) => {
-            const controller = new controllerClass(req, res);
-
-            try {
-                this._checkIfActionExists(controller, methodToCall);
-
-                return await controller[methodToCall]();
-            } catch (err) {
-                return next(err);
-            }
-        });
+        return this._handleDefinedRequest(actionStr, controllerClass, methodToCall, 'delete');
     }
 
     /**
@@ -205,6 +149,24 @@ class DynamicRouter {
         if (controller[action] === undefined) {
             throw new Error(`No ${action}() action inside ${controller.constructor.name} defined.`);
         }
+    }
+
+    _handleDefinedRequest(actionStr, controllerClass, methodToCall, method) {
+        const action = this.getPrefix() + actionStr;
+
+        this.applyMiddlewares(action);
+
+        this._router[method](this.getPrefix() + actionStr, async (req, res, next) => {
+            const controller = new controllerClass(req, res);
+
+            try {
+                this._checkIfActionExists(controller, methodToCall);
+
+                return await controller[methodToCall]();
+            } catch (err) {
+                return next(err);
+            }
+        });
     }
 }
 
