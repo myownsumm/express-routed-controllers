@@ -55,6 +55,8 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
+                this.checkIfActionExists(controller, methodToCall);
+
                 return await controller[methodToCall]();
             } catch (err) {
                 return next(err);
@@ -78,6 +80,8 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
+                this.checkIfActionExists(controller, methodToCall);
+
                 return await controller[methodToCall]();
             } catch (err) {
                 return next(err);
@@ -101,6 +105,8 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
+                this.checkIfActionExists(controller, methodToCall);
+
                 return await controller[methodToCall]();
             } catch (err) {
                 return next(err);
@@ -124,6 +130,8 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
+                this.checkIfActionExists(controller, methodToCall);
+
                 return await controller[methodToCall]();
             } catch (err) {
                 return next(err);
@@ -160,9 +168,7 @@ class DynamicRouter {
 
                 const controller = new controllerClass(req, res);
 
-                if (controller[methodToCall] === undefined) {
-                    throw new Error(`No ${methodToCall}() function inside ${controller.constructor.name} defined.`);
-                }
+                this.checkIfActionExists(controller, methodToCall);
 
                 return await controller[methodToCall]();
             } catch (err) {
@@ -187,6 +193,12 @@ class DynamicRouter {
         dRouter.setMiddlewares(middlewares);
 
         return callback(dRouter);
+    }
+
+    checkIfActionExists(controller, action) {
+        if (controller[action] === undefined) {
+            throw new Error(`No ${action}() action inside ${controller.constructor.name} defined.`);
+        }
     }
 }
 
