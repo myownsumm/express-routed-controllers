@@ -55,7 +55,7 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
-                this.checkIfActionExists(controller, methodToCall);
+                this._checkIfActionExists(controller, methodToCall);
 
                 return await controller[methodToCall]();
             } catch (err) {
@@ -80,7 +80,7 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
-                this.checkIfActionExists(controller, methodToCall);
+                this._checkIfActionExists(controller, methodToCall);
 
                 return await controller[methodToCall]();
             } catch (err) {
@@ -105,7 +105,7 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
-                this.checkIfActionExists(controller, methodToCall);
+                this._checkIfActionExists(controller, methodToCall);
 
                 return await controller[methodToCall]();
             } catch (err) {
@@ -130,7 +130,7 @@ class DynamicRouter {
             const controller = new controllerClass(req, res);
 
             try {
-                this.checkIfActionExists(controller, methodToCall);
+                this._checkIfActionExists(controller, methodToCall);
 
                 return await controller[methodToCall]();
             } catch (err) {
@@ -168,7 +168,7 @@ class DynamicRouter {
 
                 const controller = new controllerClass(req, res);
 
-                this.checkIfActionExists(controller, methodToCall);
+                this._checkIfActionExists(controller, methodToCall);
 
                 return await controller[methodToCall]();
             } catch (err) {
@@ -195,7 +195,13 @@ class DynamicRouter {
         return callback(dRouter);
     }
 
-    checkIfActionExists(controller, action) {
+    /**
+     *
+     * @param controller
+     * @param action
+     * @private
+     */
+    _checkIfActionExists(controller, action) {
         if (controller[action] === undefined) {
             throw new Error(`No ${action}() action inside ${controller.constructor.name} defined.`);
         }
