@@ -139,6 +139,12 @@ class DynamicRouter {
         return callback(dRouter);
     }
 
+    use(func) {
+        this._router.use(func);
+
+        return this;
+    }
+
     /**
      *
      * @param controller
