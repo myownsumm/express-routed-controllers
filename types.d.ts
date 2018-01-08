@@ -16,6 +16,8 @@ declare module "express-routed-controllers" {
         post(action: string, controller: any, method: string);
         delete(action: string, controller: any, method: string);
 
+        use(func: any);
+
         public group(params: { prefix?: string, middlewares?: ((req: Express.Request, res: Express.Response, next) => any)[] }, callback);
 
         public router: any;
